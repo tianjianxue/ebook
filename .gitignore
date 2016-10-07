@@ -1,0 +1,7 @@
+
+/.idea/
+*.iml
+/bookstore-dao/bookstore-dao.iml
+/bookstore-web/bookstore-web.iml
+/ebook-dao/target/
+/ebook-web/target/
