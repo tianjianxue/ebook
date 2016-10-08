@@ -47,15 +47,16 @@
         <tr>
           <td class="thumb"><img src="${g.value.picture}" height="150" /></td>
           <td class="title">${g.value.bookname}</td>
-          <td><input class="input-text" type="text" name="nums" value="${g.value.count}" /></td>
+          <td>
+            <input class="input-text" type="text" name="nums"  bid="${g.value.bookid}" price="${g.value.bookprice}" value="${g.value.count}" /></td>
           <td>￥<span>${g.value.bookprice}</span></td>
           <td>￥<span>${g.value.bookprice*g.value.count}</span></td>
-          <td><span><a href="#">删除</a> </span></td>
+          <td><span><a class="del" href="javascript:void(0)" bid="${g.value.bookid}" >删除</a></span></td>
         </tr>
         </c:forEach>
       </table>
       <div class="button">
-        <h4>总价：￥<span>65.00</span>元</h4>
+        <h4>总价：￥<span id="total">65.00</span>元</h4>
         <input class="input-chart" type="submit" name="submit" value="" />
       </div>
     </form>
@@ -64,6 +65,36 @@
 <div id="footer" class="wrap">
   合众艾特网上书城 &copy; 版权所有
 </div>
+<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+  $(function(){
+
+      $(".input-text").blur(function(){
+        var price=$(this).attr("price");
+        var count=$(this).val();
+        //先修改本地小计
+      $(this).parent().next().next().children("span").html( price* count )
+        //在修改服务器:
+        $.post("updatecount",{"bid":$(this).attr("bid"),"count":$(this).val()},function(a){
+             $("#total").html(a)
+        })
+
+
+
+
+      })
+
+
+      $(".del").click(function(){
+            $(this).parents("tr").slideUp(1000)
+        $.post("deletebook",{"bid":$(this).attr("bid")},function(a){
+          $("#total").html(a)
+
+        })
+      })
+  })
+</script>
+
 </body>
 </html>
 

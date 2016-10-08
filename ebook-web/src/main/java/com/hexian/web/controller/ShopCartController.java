@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -56,6 +57,40 @@ public class ShopCartController {
             session.setAttribute("cart", cart);
             return "redirect:/cart/toshoping";
         }
+
+
+    @RequestMapping("/updatecount")
+    @ResponseBody
+    public Object updatecount(@RequestParam("bid") Integer bid,@RequestParam("count") Integer count,HttpSession session){
+        System.out.println("修改了"+bid+"的数量，新的值是"+count);
+        Map cart=(Map)session.getAttribute("cart");
+        BookVo bookVo=(BookVo)cart.get(bid);
+        if(bookVo!=null){
+            bookVo.setCount(count);
+        }
+        int sum=0;
+        Collection<BookVo> value= cart.values();
+        for(BookVo vo : value){
+            sum+=vo.getCount()*vo.getBookprice();
+        }
+        session.setAttribute("cart",cart);
+        return sum;
+    }
+
+    @RequestMapping("/deletebook")
+    @ResponseBody
+    public Object deleteBook(@RequestParam("bid") Integer bid,HttpSession session){
+
+        Map cart=(Map)session.getAttribute("cart");
+        cart.remove(bid);
+        session.setAttribute("cart",cart);
+        int sum=0;
+        Collection<BookVo> value= cart.values();
+        for(BookVo vo : value){
+            sum+=vo.getCount()*vo.getBookprice();
+        }
+        return sum;
+    }
 
     @RequestMapping("toshoping")
     public String shoppping(){
