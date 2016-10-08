@@ -1,5 +1,7 @@
 package com.hzit.vo;
 
+import java.util.List;
+
 /**
  * 
  * @author renhao
@@ -25,10 +27,22 @@ public class OrderlistVo {
 	 *  订单状态
 	 */
 	private String state;
+
+	public List<BookVo> getBookVoList() {
+		return bookVoList;
+	}
+
+	public void setBookVoList(List<BookVo> bookVoList) {
+		this.bookVoList = bookVoList;
+	}
+
 	/**
-	 * 订单编号
+	 * 订单中所有购买的图书集合
 	 * @param orderid
 	 */
+	private List<BookVo> bookVoList;
+
+
 	public void setOrderid(Integer orderid){
 		this.orderid = orderid;
 	}
